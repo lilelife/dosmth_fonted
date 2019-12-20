@@ -2,7 +2,7 @@
   <div>
     <h1>{{ msg }}</h1>
     <div class="box">
-      <div class="box2">
+      <div class="box_todo_left">
         <div style="display: flex; flex-direction: row">
           <h1>代办事项
           </h1>
@@ -20,7 +20,7 @@
           </div>
         </Modal>
       </div>
-      <div style="margin-right:300px">
+      <div class="box_todo_right">
         <Menu mode="horizontal" theme="light" @on-select="selectMenu" active-name="menuBic">
           <MenuItem name="book">
           <Icon type="ios-book-outline" /> 看书
@@ -35,7 +35,7 @@
           <Icon type="ios-briefcase-outline" /> 小工具
           </MenuItem>
         </Menu>
-       <router-view/>
+        <router-view/>
       </div>
     </div>
 
@@ -88,6 +88,11 @@
             todoTitle: 'call to leli',
             todoTxt: '晚上十点给尊敬的李乐大人打个电话问候最近的生活',
             todoOperation: '删除'
+          },
+          {
+            todoTitle: '写博客',
+            todoTxt: '关于k8s的A博客整理',
+            todoOperation: '删除'
           }
         ],
         addTodoMd: false,//添加代办modal
@@ -105,15 +110,15 @@
     },
     methods: {
       selectMenu(name) {
-        this.$Message.info('选择'+name);
-        this.$router.push('/doSomething/'+name)
+        this.$Message.info('选择' + name);
+        this.$router.push('/doSomething/' + name)
       },
       // 添加代办
       addTodoFc() {
-        if(this.addTodo.todoTitle===""||this.addTodo.todoTxt===""){
+        if (this.addTodo.todoTitle === "" || this.addTodo.todoTxt === "") {
           this.$Message.error("内容不能为空")
-         
-          return 
+
+          return
         }
         this.todoData.push(this.addTodo);
         this.$Message.info("添加成功");
@@ -132,17 +137,33 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .box {
-    display: flex;
+    /*display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-around;*/
   }
   
-  .box2 {
-    display: flex;
-    width: 30%;
+  .box_todo_right {
+    margin-top: 10px;
+    position:   fixed;
+    left: 500px;
+    top: 50px;
+  }
+  
+  .box_todo_left {
+    /*display: flex;
     flex-direction: column;
-    justify-content: center;
-    margin-top: 20px
+    justify-content: center;*/
+    /*width: 30%;
+    */
+
+    
+    position: fixed;
+    left: 20px;
+    top: 50px;
+
+    width: 379px;
+    margin-top: 20px;
+    margin-left: 20px;
   }
   
   h1,

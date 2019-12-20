@@ -22,6 +22,21 @@ export default new Router({
       component: Sport
     },
     {
+      path: '/book',
+      name: 'Book',
+      component: Book
+    },
+    {
+      path: '/plan',
+      name: 'Plan',
+      component: Plan
+    },
+    {
+      path: '/tools',
+      name: 'Tools',
+      component: Tools
+    },
+    {
       path: '/dosomething',
       name: 'Dosomething',
       component: Dosomething,
