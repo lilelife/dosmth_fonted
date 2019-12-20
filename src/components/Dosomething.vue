@@ -1,0 +1,167 @@
+<template>
+  <div>
+    <h1>{{ msg }}</h1>
+    <div class="box">
+      <div class="box2">
+        <div style="display: flex; flex-direction: row">
+          <h1>代办事项
+          </h1>
+          <Button type="text" icon="md-add" @click="addTodoMd=true">添加</Button>
+        </div>
+        <Card style="margin-top:20px" width=100px>
+          <img src="../assets/tdo.jpg"></img>
+          <Table :columns="todoColumns" :data="todoData" height=300px></Table>
+
+        </Card>
+        <Modal v-model="addTodoMd" @on-ok="addTodoFc" title="添加代办事项" @on-cancel="$Message.info('取消添加')">
+          <div style="margin-top:20px">
+            <Input v-model="addTodo.todoTitle" placeholder="输入标题"></Input>
+            <Input v-model="addTodo.todoTxt" style="margin-top:10px" placeholder="输入具体内容"></Input>
+          </div>
+        </Modal>
+      </div>
+      <div style="margin-right:300px">
+        <Menu mode="horizontal" theme="light" @on-select="selectMenu" active-name="menuBic">
+          <MenuItem name="book">
+          <Icon type="ios-book-outline" /> 看书
+          </MenuItem>
+          <MenuItem name="sport">
+          <Icon type="md-bicycle" /> 运动
+          </MenuItem>
+          <MenuItem name="plan">
+          <Icon type="ios-clipboard-outline" /> 计划
+          </MenuItem>
+          <MenuItem name="tools">
+          <Icon type="ios-briefcase-outline" /> 小工具
+          </MenuItem>
+        </Menu>
+       <router-view/>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'Dosomething',
+    data() {
+      return {
+        msg: 'Welcome to Your todo',
+        todoColumns: [
+          {
+            title: '主题',
+            key: 'todoTitle'
+          },
+          {
+            title: '内容',
+            key: 'todoTxt'
+          },
+          {
+            title: '操作',
+            key: 'todoOperation',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      var index = params.index;
+                      this.$Message.info("已完成： " + this.todoData[index].todoTitle);
+                      this.todoData.splice(index, 1); // 数组删除 
+                    }
+                  }
+                }, 'done')
+
+              ]);
+            }
+          }
+        ],
+        todoData: [
+          {
+            todoTitle: 'call to leli',
+            todoTxt: '晚上十点给尊敬的李乐大人打个电话问候最近的生活',
+            todoOperation: '删除'
+          }
+        ],
+        addTodoMd: false,//添加代办modal
+        addTodo: {
+          todoTitle: '',
+          todoTxt: ''
+        }
+      }
+    },
+    mounted() {
+      this.$Notice.warning({
+        title: '今天待做',
+        desc: '!!打电话给'
+      })
+    },
+    methods: {
+      selectMenu(name) {
+        this.$Message.info('选择'+name);
+        this.$router.push('/doSomething/'+name)
+      },
+      // 添加代办
+      addTodoFc() {
+        if(this.addTodo.todoTitle===""||this.addTodo.todoTxt===""){
+          this.$Message.error("内容不能为空")
+         
+          return 
+        }
+        this.todoData.push(this.addTodo);
+        this.$Message.info("添加成功");
+        this.addTodo = {};  // 清空addTodo 
+      },
+      // 完成代办
+      doneTodo(index) {
+        this.$Message.info("已完成： " + this.todoData[index].todoTitle);
+        this.todoData.splice(index, 1); // 数组删除 
+      }
+    }
+  }
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  .box2 {
+    display: flex;
+    width: 30%;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px
+  }
+  
+  h1,
+  h2 {
+    font-weight: normal;
+    text-align: center;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    display: inline-block;
+    margin: 0 10px;
+  }
+  
+  a {
+    color: #42b983;
+  }
+</style>
