@@ -39,15 +39,15 @@
 
             <Modal v-model="modal1" title="使用手机登录" @on-ok="login" @on-cancel="cancel">
 
-                <i-input placeholder="手机号码" v-model="phone" number:true maxlength:11> </i-input>
-                <i-input placeholder="密码" type="password" v-model="password" style="margin-top:10px"></i-input>
+                <i-input placeholder="手机号码" clearable v-model="phone" number:true maxlength:11> </i-input>
+                <i-input placeholder="密码" type="password" clearable v-model="password" style="margin-top:10px"></i-input>
                 <Button @click="modal2=true;modal1 =false" type="text">没有用户？去注册</Button>
             </Modal>
             <Modal v-model="modal2" title="手机注册" @on-ok="register"   @on-cancel="$Message.info('取消注册')">
-                <Input placeholder="手机号码" v-model="rgPhone" @on-blur="rg_input_blur"></Input>
-                <Input placeholder="昵称" v-model="name" style="margin-top:10px"></Input>
-                <Input placeholder="输入密码" v-model="rgPassword" style="margin-top:10px"></Input>
-                <Input placeholder="确认密码" v-model="reRgPassword" @on-blur="rg_input_pwd_blur" style="margin-top:10px"> </Input>
+                <Input placeholder="手机号码" clearable v-model="rgPhone" @on-blur="rg_input_blur"></Input>
+                <Input placeholder="昵称" clearable v-model="name" style="margin-top:10px"></Input>
+                <Input placeholder="输入密码" clearable type="password" password clear v-model="rgPassword" style="margin-top:10px"></Input>
+                <Input placeholder="确认密码" clearable password type="password" v-model="reRgPassword" @on-blur="rg_input_pwd_blur" style="margin-top:10px"> </Input>
             </Modal>
         </div>
     </div>

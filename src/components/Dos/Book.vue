@@ -42,8 +42,10 @@
             title="《帅爸爸》" description="浮云一别后，流水十年间，欢笑情如旧，萧疏鬓已斑" />
         </ListItem>
       </List>
-      <Button  @click="$Message.info('请耐心等待开发~')" type="text"> 新增书籍</Button> 
+      <Affix :offset-bottom="20">
+      <Button  @click="$Message.info('请耐心等待开发~')" type="primary"> 新增书籍</Button> 
       <Button @click="$Message.info('请耐心等待开发~')" type="text"> 历史阅读</Button> 
+      </Affix>
       </Col>
     </Row>
 
