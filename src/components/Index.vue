@@ -43,7 +43,7 @@
                 <i-input placeholder="密码" type="password" clearable v-model="password" style="margin-top:10px"></i-input>
                 <Button @click="modal2=true;modal1 =false" type="text">没有用户？去注册</Button>
             </Modal>
-            <Modal v-model="modal2" title="手机注册" @on-ok="register"   @on-cancel="$Message.info('取消注册')">
+            <Modal v-model="modal2" title="手机注册" @on-ok="register" @on-cancel="$Message.info('取消注册')">
                 <Input placeholder="手机号码" clearable v-model="rgPhone" @on-blur="rg_input_blur"></Input>
                 <Input placeholder="昵称" clearable v-model="name" style="margin-top:10px"></Input>
                 <Input placeholder="输入密码" clearable type="password" password clear v-model="rgPassword" style="margin-top:10px"></Input>
@@ -55,7 +55,9 @@
 </template>
 <script>
     import Loading from '@/components/Loading.vue'
-    var phone2 = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+    import { login } from '@/request/api'; // 导入自定义api接口
+
+    var phone2 = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/; //校验电话号
     export default {
         components: {
             Loading
@@ -67,10 +69,10 @@
                 modal2: false,// 注册modal
                 phone: '',
                 password: '',
-                rgPhone:'', // 注册电话
+                rgPhone: '', // 注册电话
                 name: '',
-                rgPassword:'', //注册密码
-                reRgPassword:'',
+                rgPassword: '', //注册密码
+                reRgPassword: '',
                 isPhone: true, //电话格式正确？
                 isPwdEquls: true,// 密码相同？
                 imgurl: 'http://chuantu.xyz/t6/704/1576205013x2073530527.jpg',
@@ -87,14 +89,25 @@
             bgImg.onload = () => { // 等背景图片加载成功后 去除loading
                 this.showLoading = false
             };
-           
+          
         },
         methods: {
-            
+
             login() {
                 if (this.phone.length == 11 && (phone2.test(this.phone))) {
-                    this.$router.push('/dosomething/sport')
-                    this.$Message.info('登录成功')
+                    var userDto = {
+                        phone: '12334453',
+                        pwd: '235kadsjgfklajgoljghaslfjyo3342'
+                    };
+                    // login(userDto).then(res => {
+                    //     log.info('登录成功')
+                    //     this.$router.push('/dosomething/sport')
+                    //     this.$Message.info('登录成功')
+                    // })
+                    this.$post('/users',userDto).then(res=>{
+                        // ...
+                        log.info('..login')
+                    })
                 } else {
                     this.modal1 = true;
                     this.$Message.error('请输入正确格式的电话号码')
@@ -105,43 +118,43 @@
             },
             // 注册
             register() {
-                if(!this.isPhone){
-                     this.$Message.error('请输入正确格式的手机号码');
-                     this.modal2 = true;
-                     return 
-                }else if (!this.isPwdEquls){
+                if (!this.isPhone) {
+                    this.$Message.error('请输入正确格式的手机号码');
+                    this.modal2 = true;
+                    return
+                } else if (!this.isPwdEquls) {
                     this.$Message.error('密码不一致')
                     this.modal2 = true;
-                    return 
+                    return
                 }
                 //todo 调用后台注册 md5 pwd
-                var user  = {
-                    'name':this.name,
+                var user = {
+                    'name': this.name,
                     'pwd': this.pwd,
                     'phone': this.phone
                 };
-               
+
                 this.$Message.info("注册成功")
             },
-            rg_input_blur(){
-                if(!(this.phone.length == 11 && (phone2.test(this.phone)))){
+            rg_input_blur() {
+                if (!(this.phone.length == 11 && (phone2.test(this.phone)))) {
                     this.$Message.error('请输入正确格式的手机号码');
                     this.isPhone = false;
                 }
             },
-            rg_input_pwd_blur(){
-                if(!this.rgPassword === this.reRgPassword){
+            rg_input_pwd_blur() {
+                if (!this.rgPassword === this.reRgPassword) {
                     this.isPwdEquls = false;
                     this.$Message.error('两次密码不同')
                 }
             },
-            notice(notcie){
+            notice(notcie) {
                 this.$Notice.open({
                     title: '今天待做',
-                    desc: '!!'+notice
+                    desc: '!!' + notice
                 })
             }
-            
+
 
         }
 

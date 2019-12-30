@@ -6,6 +6,14 @@ import App from './App'
  import router from './router'
 //import iView from 'iview'
 //import 'iview/dist/styles/iview.css'
+import axios from 'axios'
+import {post,get,put,patch} from './request/http'
+
+// 定义全局变量
+Vue.prototype.$post=post;
+Vue.prototype.$get=get;
+Vue.prototype.$put=put;
+Vue.prototype.$patch=patch; 
 
 Vue.config.productionTip = false
 //--use iview
