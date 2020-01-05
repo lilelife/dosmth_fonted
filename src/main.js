@@ -8,6 +8,10 @@ import App from './App'
 //import 'iview/dist/styles/iview.css'
 import axios from 'axios'
 import {post,get,put,patch} from './request/http'
+import QRCode from 'qrcode' // 引入二维码组件
+import Share from 'vue-social-share'
+import 'vue-social-share/dist/client.css';
+import '../node_modules/social-share.js/dist/js/social-share.min.js'
 
 // 定义全局变量
 Vue.prototype.$post=post;
@@ -19,7 +23,7 @@ Vue.config.productionTip = false
 //--use iview
 //Vue.use(iView)
 Vue.use(router)
-
+Vue.use(Share)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
