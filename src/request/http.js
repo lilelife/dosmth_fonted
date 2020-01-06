@@ -4,15 +4,15 @@ import { Message } from 'iview';
 
 //环境切换 
 if (process.env.NODE_ENV == 'development') {
-    axios.defaults.baseURL = 'https://localhost:80';  //基础url + api.js中的 url
+    axios.defaults.baseURL = 'http://localhost:8001';  //基础url + api.js中的 url
 } else if (process.env.NODE_ENV == 'debug') {
-    axios.defaults.baseURL = 'https://localhost:80'
+    axios.defaults.baseURL = 'http://localhost:8001'
 } else if (process.env.NODE_ENV == 'production') {
-    axios.defaults.baseURL = 'https://http://47.105.48.220:80'
+    axios.defaults.baseURL = 'http://47.105.48.220:8001'
 }
 // 请求超时 请求头
 axios.defaults.timeout = 10000
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 // 请求拦截器
 axios.interceptors.request.use(
@@ -110,8 +110,9 @@ export function get(url, params){
  * @param {Object} params [请求时携带的参数] 
  */
 export function post(url, params) {    
+    console.log('a')
     return new Promise((resolve, reject) => {         
-        axios.post(url, QS.stringify(params))        
+        axios.post(url,params)        
         .then(res => {            
             resolve(res.data);        
         })        

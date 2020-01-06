@@ -20,7 +20,7 @@
       return {
         msg: '江南无所有、聊赠一枝春',
         config:{
-          sites: ['qq','wechat'],
+          sites: ['qzone', 'qq', 'weibo','wechat', 'douban'],
           wechatQrcodeTitle   : '微信扫一扫：分享',
           wechatQrcodeHelper  : '<p>扫一扫</p><p>二维码便可将本文分享至朋友圈。</p>'
         }

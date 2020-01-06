@@ -12,8 +12,11 @@ import QRCode from 'qrcode' // 引入二维码组件
 import Share from 'vue-social-share'
 import 'vue-social-share/dist/client.css';
 import '../node_modules/social-share.js/dist/js/social-share.min.js'
+// md5 加密：
+import md5 from 'js-md5'
 
 // 定义全局变量
+Vue.prototype.$md5 = md5;
 Vue.prototype.$post=post;
 Vue.prototype.$get=get;
 Vue.prototype.$put=put;

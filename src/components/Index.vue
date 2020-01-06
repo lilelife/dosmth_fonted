@@ -39,8 +39,8 @@
 
             <Modal v-model="modal1" title="使用手机登录" @on-ok="login" @on-cancel="cancel">
 
-                <i-input placeholder="手机号码" clearable v-model="phone" number:true maxlength:11> </i-input>
-                <i-input placeholder="密码" type="password" clearable v-model="password" style="margin-top:10px"></i-input>
+                <i-input placeholder="手机号码" clearable v-model="user.phone" number:true maxlength:11> </i-input>
+                <i-input placeholder="密码" type="password"  clearable v-model="user.pwd" style="margin-top:10px"></i-input>
                 <Button @click="modal2=true;modal1 =false" type="text">没有用户？去注册</Button>
             </Modal>
             <Modal v-model="modal2" title="手机注册" @on-ok="register" @on-cancel="$Message.info('取消注册')">
@@ -67,15 +67,17 @@
                 msg: 'do somthing',
                 modal1: false, //登录modal
                 modal2: false,// 注册modal
-                phone: '',
-                password: '',
+                user: { // 登录用户
+                    phone: '',
+                    pwd: '',
+                },
                 rgPhone: '', // 注册电话
                 name: '',
                 rgPassword: '', //注册密码
                 reRgPassword: '',
                 isPhone: true, //电话格式正确？
                 isPwdEquls: true,// 密码相同？
-                imgurl: 'http://chuantu.xyz/t6/704/1576205013x2073530527.jpg',
+                imgurl: 'http://chuantu.xyz/t6/710/1578289233x2890211686.jpg',
                 showLoading: true, // 显示loading
 
             }
@@ -89,25 +91,30 @@
             bgImg.onload = () => { // 等背景图片加载成功后 去除loading
                 this.showLoading = false
             };
-          
+
         },
         methods: {
 
             login() {
-                if (this.phone.length == 11 && (phone2.test(this.phone))) {
-                    var userDto = {
-                        phone: '12334453',
-                        pwd: '235kadsjgfklajgoljghaslfjyo3342'
-                    };
-                    // login(userDto).then(res => {
+                if (this.user.phone.length == 11 && (phone2.test(this.user.phone))) {
+                    this.user.pwd = this.$md5(this.user.pwd);
+                    console.log('md5----'+JSON.stringify(this.user))
+                    // login(this.user).then(res => {
                     //     log.info('登录成功')
-                    //     this.$router.push('/dosomething/sport')
+                    //     // this.$router.push('/dosomething/sport')
                     //     this.$Message.info('登录成功')
+                    // },err=>{
+                        
                     // })
-                    this.$post('/users',userDto).then(res=>{
+                    this.$post('/users', this.user).then(res => {
                         // ...
-                        log.info('..login')
-                    })
+                        console.log('..login'+JSON.stringify(res))
+                        if(res.code==200){
+                            this.$router.push('/dosomething/book')
+                        }else{
+                            this.$Message.error(res.msg)
+                        }
+                    },err=>{})
                 } else {
                     this.modal1 = true;
                     this.$Message.error('请输入正确格式的电话号码')
@@ -136,6 +143,11 @@
 
                 this.$Message.info("注册成功")
             },
+            //md5 str
+            md5(str) {
+                return this.$md5(str);
+            },
+
             rg_input_blur() {
                 if (!(this.phone.length == 11 && (phone2.test(this.phone)))) {
                     this.$Message.error('请输入正确格式的手机号码');
