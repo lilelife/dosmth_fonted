@@ -15,8 +15,8 @@
         </Card>
         <Modal v-model="addTodoMd" @on-ok="addTodoFc" title="添加代办事项" @on-cancel="$Message.info('取消添加')">
           <div style="margin-top:20px">
-            <Input v-model="addTodo.todoTitle" placeholder="输入标题"></Input>
-            <Input v-model="addTodo.todoTxt" style="margin-top:10px" placeholder="输入具体内容"></Input>
+            <Input v-model="addTodo.title" placeholder="输入标题"></Input>
+            <Input v-model="addTodo.content" style="margin-top:10px" placeholder="输入具体内容"></Input>
           </div>
         </Modal>
       </div>
@@ -51,11 +51,11 @@
         todoColumns: [
           {
             title: '主题',
-            key: 'todoTitle'
+            key: 'title'
           },
           {
             title: '内容',
-            key: 'todoTxt'
+            key: 'content'
           },
           {
             title: '操作',
@@ -73,8 +73,8 @@
                   on: {
                     click: () => {
                       var index = params.index;
-                      this.$Message.info("已完成： " + this.todoData[index].todoTitle);
-                      this.todoData.splice(index, 1); // 数组删除 
+                      this.doneTodo(index)
+                     
                     }
                   }
                 }, 'done')
@@ -85,28 +85,30 @@
         ],
         todoData: [
           {
-            todoTitle: 'call to leli',
-            todoTxt: '晚上十点给尊敬的李乐大人打个电话问候最近的生活',
-            todoOperation: '删除'
+            title: 'call to leli',
+            content: '晚上十点给尊敬的李乐大人打个电话问候最近的生活'
+           
           },
           {
-            todoTitle: '写博客',
-            todoTxt: '关于k8s的A博客整理',
-            todoOperation: '删除'
+            title: '写博客',
+            content: '关于k8s的A博客整理'
           }
         ],
         addTodoMd: false,//添加代办modal
         addTodo: {
-          todoTitle: '',
-          todoTxt: ''
+          title: '',
+          content: '',
+          userId: 0,
         }
       }
     },
     mounted() {
+      this.getTodos(localStorage['userId'])
       this.$Notice.warning({
         title: '今天待做',
         desc: '!!打电话给'
       })
+
     },
     methods: {
       selectMenu(name) {
@@ -117,18 +119,46 @@
       addTodoFc() {
         if (this.addTodo.todoTitle === "" || this.addTodo.todoTxt === "") {
           this.$Message.error("内容不能为空")
-
           return
         }
-        this.todoData.push(this.addTodo);
-        this.$Message.info("添加成功");
-        this.addTodo = {};  // 清空addTodo 
+
+        this.addTodo.userId = window.localStorage['userId'];
+        // put  api
+        this.$put('/todos', this.addTodo).then(res => {
+          if (res.code == 200) {
+            // var addT = {'a':''};
+            this.todoData.push(this.addTodo);
+            console.log('--'+JSON.stringify(this.addTodo)+'---'+JSON.stringify(this.todoData))
+            console.log('add todo :' + JSON.stringify(res))
+            this.$Message.info('添加成功')
+             this.addTodo = {};  // 清空addTodo 
+          }else{
+            this.$Message.error(res.msg)
+          }
+
+        }, err => {
+          this.$Message.error('添加失败')
+        });
+       
       },
       // 完成代办
       doneTodo(index) {
-        this.$Message.info("已完成： " + this.todoData[index].todoTitle);
-        this.todoData.splice(index, 1); // 数组删除 
-      }
+        
+        var todoId = this.todoData[index].id;
+        this.$get('/todos/'+todoId ).then(res=>{
+          console.log('done todo:'+JSON.stringify(res))
+          this.$Message.info("已完成： " + this.todoData[index].title);
+          this.todoData.splice(index, 1); // 数组删除 
+        },err=>{});
+      
+      },
+      // 获取代办事项列表
+      getTodos(userId){
+        this.$get('/todos/'+userId+'/0').then(res=>{
+          this.todoData = res.result.list;
+          console.log('getTodos'+JSON.stringify(res))
+        },errr=>{});
+      } 
     }
   }
 
@@ -144,7 +174,7 @@
   
   .box_todo_right {
     margin-top: 10px;
-    position:   fixed;
+    position: fixed;
     left: 500px;
     top: 50px;
   }
@@ -155,12 +185,9 @@
     justify-content: center;*/
     /*width: 30%;
     */
-
-    
     position: fixed;
     left: 20px;
     top: 50px;
-
     width: 379px;
     margin-top: 20px;
     margin-left: 20px;

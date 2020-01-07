@@ -44,10 +44,10 @@
                 <Button @click="modal2=true;modal1 =false" type="text">没有用户？去注册</Button>
             </Modal>
             <Modal v-model="modal2" title="手机注册" @on-ok="register" @on-cancel="$Message.info('取消注册')">
-                <Input placeholder="手机号码" clearable v-model="rgPhone" @on-blur="rg_input_blur"></Input>
-                <Input placeholder="昵称" clearable v-model="name" style="margin-top:10px"></Input>
-                <Input placeholder="输入密码" clearable type="password" password clear v-model="rgPassword" style="margin-top:10px"></Input>
-                <Input placeholder="确认密码" clearable password type="password" v-model="reRgPassword" @on-blur="rg_input_pwd_blur" style="margin-top:10px"> </Input>
+                <Input placeholder="手机号码" clearable v-model="rgUser.phone" @on-blur="rg_input_blur"></Input>
+                <Input placeholder="昵称" clearable v-model="rgUser.name" style="margin-top:10px"></Input>
+                <Input placeholder="输入密码" clearable type="password" password clear v-model="rgUser.pwd" style="margin-top:10px"></Input>
+                <Input placeholder="确认密码" clearable password type="password" v-model="reRgPwd" @on-blur="rg_input_pwd_blur" style="margin-top:10px"> </Input>
             </Modal>
         </div>
     </div>
@@ -71,10 +71,12 @@
                     phone: '',
                     pwd: '',
                 },
-                rgPhone: '', // 注册电话
-                name: '',
-                rgPassword: '', //注册密码
-                reRgPassword: '',
+                rgUser:{  // 注册用户
+                    phone:'',
+                    pwd:'',
+                    name: ''
+                },
+                reRgPwd: '', //再输入密码
                 isPhone: true, //电话格式正确？
                 isPwdEquls: true,// 密码相同？
                 imgurl: 'http://chuantu.xyz/t6/710/1578289233x2890211686.jpg',
@@ -110,13 +112,14 @@
                         // ...
                         console.log('..login'+JSON.stringify(res))
                         if(res.code==200){
+                            window.localStorage['userId']=res.result.id;
                             this.$router.push('/dosomething/book')
                         }else{
                             this.$Message.error(res.msg)
                         }
                     },err=>{})
                 } else {
-                    this.modal1 = true;
+                    // this.modal1 = true;
                     this.$Message.error('请输入正确格式的电话号码')
                 }
             },
@@ -127,21 +130,21 @@
             register() {
                 if (!this.isPhone) {
                     this.$Message.error('请输入正确格式的手机号码');
-                    this.modal2 = true;
                     return
                 } else if (!this.isPwdEquls) {
                     this.$Message.error('密码不一致')
-                    this.modal2 = true;
+               
                     return
                 }
                 //todo 调用后台注册 md5 pwd
-                var user = {
-                    'name': this.name,
-                    'pwd': this.pwd,
-                    'phone': this.phone
-                };
-
-                this.$Message.info("注册成功")
+                var pwd = this.rgUser.pwd;
+                this.rgUser.pwd=this.md5(pwd)
+                console.log('注册用户：'+JSON.stringify(this.rgUser))
+                this.$put('/users',this.rgUser).then(res=>{
+                    console.log(JSON.stringify(res))
+                    this.$Message.info("注册成功")
+                },err=>{});
+                
             },
             //md5 str
             md5(str) {
@@ -149,13 +152,13 @@
             },
 
             rg_input_blur() {
-                if (!(this.phone.length == 11 && (phone2.test(this.phone)))) {
+                if (!(this.rgUser.phone.length == 11 && (phone2.test(this.rgUser.phone)))) {
                     this.$Message.error('请输入正确格式的手机号码');
                     this.isPhone = false;
                 }
             },
             rg_input_pwd_blur() {
-                if (!this.rgPassword === this.reRgPassword) {
+                if (!this.rgUser.pwd === this.reRgPwd) {
                     this.isPwdEquls = false;
                     this.$Message.error('两次密码不同')
                 }

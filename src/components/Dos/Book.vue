@@ -26,19 +26,19 @@
       <h1>书单：</h1>
       <List>
         <ListItem>
-            <ListItemMeta :avatar="bookUrl" title="《穷爸爸》" 
+            <ListItemMeta :avatar="bookListPtUrl" title="《穷爸爸》" 
             description="雨中黄叶树，等下白头人" />
         </ListItem>
         <ListItem>
-            <ListItemMeta :avatar="bookUrl" 
+            <ListItemMeta :avatar="bookListPtUrl" 
             title="《富爸爸》" description="江南无所有，聊赠一枝春" />
         </ListItem>
         <ListItem>
-            <ListItemMeta :avatar="bookUrl" 
+            <ListItemMeta :avatar="bookListPtUrl" 
             title="《高爸爸》" description="且将新火试新茶，诗酒趁年华" />
         </ListItem>
         <ListItem>
-            <ListItemMeta :avatar="bookUrl" 
+            <ListItemMeta :avatar="bookListPtUrl" 
             title="《帅爸爸》" description="浮云一别后，流水十年间，欢笑情如旧，萧疏鬓已斑" />
         </ListItem>
       </List>
@@ -61,7 +61,8 @@
           name: '影响力',
           des: '作者是 [美] 罗伯特·西奥迪尼。 该书从实践技巧的角度，深度剖析影响力的逻辑、交换、说明、树立榜样、回避、威胁等各要素，全方位地提高你影响他人的能力，从而获得更大的成功。'
         },
-        bookUrl: 'http://chuantu.xyz/t6/707/1576835378x2073530529.jpg'
+        bookListPtUrl: 'http://47.105.48.220/img/bookL.jpg' //书单书本图片
+        // bookListPtUrl: '../../assets/bookL.jpg'
       }
     },
     computed: {

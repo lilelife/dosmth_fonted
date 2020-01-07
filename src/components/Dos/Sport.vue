@@ -4,13 +4,13 @@
     <h2>{{title}}</h2>
     <List header="开始运动" footer=" 开始GO GO GO !!!" border>
       <ListItem>
-        <ListItemMeta avatar="http://chuantu.xyz/t6/707/1576750901x2073530527.gif" title="俯卧撑" description="5分钟，你必须完成30+个"></ListItemMeta>
+        <ListItemMeta avatar="http://5b0988e595225.cdn.sohucs.com/q_70,c_zoom,w_640/images/20180720/6f57a42071a04568a45156c669b69fef.gif" title="俯卧撑" description="5分钟，你必须完成30+个"></ListItemMeta>
       </ListItem>
       <ListItem>
-        <ListItemMeta avatar="http://chuantu.xyz/t6/707/1576751232x2073530529.gif" title="深蹲" description="5分钟，你必须完成30+个"></ListItemMeta>
+        <ListItemMeta avatar="http://p1.qhimgs4.com/t01cd0374b41973fbda.gif" title="深蹲" description="5分钟，你必须完成30+个"></ListItemMeta>
       </ListItem>
       <ListItem>
-        <ListItemMeta avatar="http://chuantu.xyz/t6/707/1576751108x2073530529.gif" title="仰卧起做" description="10分钟，你必须完成70+个"></ListItemMeta>
+        <ListItemMeta avatar="http://img1.imgtn.bdimg.com/it/u=2821305855,699567172&fm=26&gp=0.jpg" title="仰卧起做" description="10分钟，你必须完成70+个"></ListItemMeta>
       </ListItem>
     </List>
    
