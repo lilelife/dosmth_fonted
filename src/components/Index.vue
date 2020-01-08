@@ -79,7 +79,7 @@
                 reRgPwd: '', //再输入密码
                 isPhone: true, //电话格式正确？
                 isPwdEquls: true,// 密码相同？
-                imgurl: 'http://chuantu.xyz/t6/710/1578289233x2890211686.jpg',
+                imgurl: 'http://47.105.48.220/img/bg.jpg',
                 showLoading: true, // 显示loading
 
             }

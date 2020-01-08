@@ -4,3 +4,6 @@ import {post,get,put,patch} from './http'
 // users接口
 export const register = params => put('/users',params) 
 export const login = params =>post('/users',params)
+
+//book接口
+export const updateBook = params => post('/books',params)

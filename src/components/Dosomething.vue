@@ -74,7 +74,7 @@
                     click: () => {
                       var index = params.index;
                       this.doneTodo(index)
-                     
+
                     }
                   }
                 }, 'done')
@@ -87,7 +87,7 @@
           {
             title: 'call to leli',
             content: '晚上十点给尊敬的李乐大人打个电话问候最近的生活'
-           
+
           },
           {
             title: '写博客',
@@ -104,10 +104,7 @@
     },
     mounted() {
       this.getTodos(localStorage['userId'])
-      this.$Notice.warning({
-        title: '今天待做',
-        desc: '!!打电话给'
-      })
+
 
     },
     methods: {
@@ -128,37 +125,43 @@
           if (res.code == 200) {
             // var addT = {'a':''};
             this.todoData.push(this.addTodo);
-            console.log('--'+JSON.stringify(this.addTodo)+'---'+JSON.stringify(this.todoData))
+            console.log('--' + JSON.stringify(this.addTodo) + '---' + JSON.stringify(this.todoData))
             console.log('add todo :' + JSON.stringify(res))
             this.$Message.info('添加成功')
-             this.addTodo = {};  // 清空addTodo 
-          }else{
+            this.addTodo = {};  // 清空addTodo 
+          } else {
             this.$Message.error(res.msg)
           }
 
         }, err => {
           this.$Message.error('添加失败')
         });
-       
+
       },
       // 完成代办
       doneTodo(index) {
-        
+
         var todoId = this.todoData[index].id;
-        this.$get('/todos/'+todoId ).then(res=>{
-          console.log('done todo:'+JSON.stringify(res))
+        this.$get('/todos/' + todoId).then(res => {
+          console.log('done todo:' + JSON.stringify(res))
           this.$Message.info("已完成： " + this.todoData[index].title);
           this.todoData.splice(index, 1); // 数组删除 
-        },err=>{});
-      
+        }, err => { });
+
       },
       // 获取代办事项列表
-      getTodos(userId){
-        this.$get('/todos/'+userId+'/0').then(res=>{
+      getTodos(userId) {
+        this.$get('/todos/' + userId + '/0').then(res => {
           this.todoData = res.result.list;
-          console.log('getTodos'+JSON.stringify(res))
-        },errr=>{});
-      } 
+          console.log('getTodos' + JSON.stringify(res))
+          if(res.result.list.length!=0){
+            this.$Notice.warning({
+            title:res.result.list[0].title ,
+            desc: res.result.list[0].content
+          })
+          }
+        }, errr => { });
+      }
     }
   }
 
